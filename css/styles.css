@@ -1,0 +1,13 @@
+body, html {
+  scroll-behavior: smooth;
+  background-color: ghostwhite;
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto Condensed", Arial, sans-serif;
+  text-align: center;
+}
+
+.workout-img {
+  width: 300px;
+  height: 300px;
+}
