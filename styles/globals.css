@@ -1,9 +1,13 @@
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Odibee+Sans&display=swap');
+
 html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  /* font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif; */
+  font-family: 'Ubuntu', sans-serif;
 }
 
 a {
@@ -13,4 +17,30 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+nav {
+  margin: 0;
+  padding: 10px 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  border-bottom: 1px solid #4d4d4d;
+  background-color: #333333;
+}
+nav a {
+  margin-left: 12px;
+  margin-right: 10px;
+  transition: all 0.5s ease-in-out;
+  font-family: 'Odibee Sans', cursive;
+  font-size: 1.75rem;
+  letter-spacing: 0.1rem;
+}
+nav a:hover {
+  color: #99ff66;
+}
+nav .logo {
+  margin-right: auto; /* this element is INSIDE <nav>, which has justify-content set to "flex-end" */
+  /* but because we set the .logo class to margin-right: "auto", this element pushes itself all the way over to the left */
+  margin-left: 0.5rem;
 }
