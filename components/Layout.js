@@ -1,14 +1,24 @@
 import Navbar from "./Navbar";
+import Head from 'next/head';
+
 import styles from "../styles/Layout.module.css";
 
 const Layout = ({children}) => {
   return (
-    <div className={styles.container}>
-      <Navbar />
-      <div className={styles.childContainer}>
-        { children }
+    <>
+      <Head>
+        <title>uFIT</title>
+        <meta name="description" content="Demo fitness app created with NextJS and create-next-app" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <div className={styles.container}>
+        <Navbar />
+        <div className={styles.childContainer}>
+          { children }
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

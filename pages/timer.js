@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import Image from "next/image";
+import ProgressBar from "../components/ProgressBar";
 
 import styles from "../styles/Timer.module.css";
 
@@ -22,7 +23,7 @@ export default function Timer()  {
 
   const [ routine, setRoutine ] = useState(defaultRoutine);
   const { workoutName, exercises } = routine; // destruc workoutName and exercises array from routine obj
-  const [ rtnIdx, setRtnIdx ] = useState(2); // this is array index for the current exercise in our exercises array
+  const [ rtnIdx, setRtnIdx ] = useState(0); // this is array index for the current exercise in our exercises array
   const [ countdown, setCountdown ] = useState(""); // tracks current exercise duration
 
   // when we click START to begin the routine, setRtnIdx to 0 -- this is used to track the current exercise we're on
@@ -32,27 +33,28 @@ export default function Timer()  {
   // at that point, clear the interval and increment rtnIdx
   // once rtnIdx === exercises.length, the routine is finished; display a completion message
 
-   //    ABS WORKOUT 1        <- workoutName
-   //      ******             <- {`/images/${exercises[rtnIdx].imgSrc}`}
-   //      **pic*
-   //      ******
-   //    [ Crunches ]         <- exercises[rtnIdx].name
-   // Time remaining: 20s     <- countdown, derived from exercises[rtnIdx].duration, decreased by setInterval
-   //  [PAUSE] [RESET]        <- buttons init at just [START], change to [RESUME] [RESET] when paused
-   //    Next: REST           <- exercises[rtnIdx+1].name
-
 
   return (
     <div className={styles.mainCard}>
       <h1 className={styles.title}>{workoutName}</h1>
-      <div className={styles.exerciseImg}>
-        <Image src={`/images/${exercises[rtnIdx].imgSrc}`} width={200} height={200} />
+
+      <div className={styles.timerMainBox}>
+        <div className={styles.exerciseBox}>
+          <div className={styles.exerciseImg}>
+            <Image src={`/images/${exercises[rtnIdx].imgSrc}`} width={200} height={200} />
+          </div>
+          <h1>{exercises[rtnIdx].name.toUpperCase()}</h1>
+        </div>
+
+        <div className={styles.ringBox}>
+          <ProgressBar duration={exercises[rtnIdx].duration}/>
+          <h1>TIME LEFT: {exercises[rtnIdx].duration}</h1>
+        </div>
       </div>
-      <h1>{exercises[rtnIdx].name.toUpperCase()}</h1>
-      <h3>Seconds left: 25</h3>
+
       <div className={styles.buttonsDiv}>
-        <button>PAUSE</button>
-        <button>RESET</button>
+        <button className={styles.butn}>PAUSE</button>
+        <button className={styles.butn}>RESET</button>
       </div>
       <h3>Up Next: {exercises[rtnIdx+1].name}</h3>
     </div>
