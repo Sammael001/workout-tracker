@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 
 import Image from "next/image";
+import Confetti from 'react-dom-confetti';
+// TO DO: export confettiConfig to another file?
+
 import ProgressBar from "../components/ProgressBar";
 // REACT HOOKS STOPWATCH -> https://www.youtube.com/watch?v=sSWGdj8a5Fs
 
@@ -11,9 +14,9 @@ export default function Timer()  {
   const defaultRoutine = {
     workoutName: "Abs Routine 1",
     exercises: [
-      { name: "plank", imgSrc: "plank-1.png", duration: "15" }, // <-- setting durations to strings bc when we load from localStorage, we'll be dealing with strings
-      { name: "rest", imgSrc: "rest-1.png", duration: "5" },
-      { name: "leg lifts", imgSrc: "leg-lift-1.png", duration: "15" },
+      { name: "plank", imgSrc: "plank-1.png", duration: "20" }, // <-- setting durations to strings bc when we load from localStorage, we'll be dealing with strings
+      // { name: "rest", imgSrc: "rest-1.png", duration: "5" },
+      // { name: "leg lifts", imgSrc: "leg-lift-1.png", duration: "20" },
       // { name: "rest", imgSrc: "rest-1.png", duration: "5" },
       // { name: "crunches", imgSrc: "crunch-1.png", duration: "15" },
       // { name: "rest", imgSrc: "rest-1.png", duration: "5" },
@@ -21,9 +24,24 @@ export default function Timer()  {
     ]
   };
 
+  const confettiConfig = {
+    angle: 90,
+    spread: 360,
+    startVelocity: 40,
+    elementCount: 70,
+    dragFriction: 0.12,
+    duration: 3000,
+    stagger: 3,
+    width: "10px",
+    height: "10px",
+    perspective: "500px",
+    colors: ["#a864fd", "#29cdff", "#78ff44", "#ff718d", "#fdff6a"]
+  };
+
   // start with default routine loaded from local vars, later this can be loaded from localStorage
   const [ routine, setRoutine ] = useState(defaultRoutine);
   const [ workoutStarted, setWorkoutStarted ] = useState(false);
+  const [ workoutComplete, setWorkoutComplete ] = useState(false);
   const { workoutName, exercises } = routine; // destruc workoutName and exercises array from routine obj
   const [ rtnIdx, setRtnIdx ] = useState(0); // this is array index for the current exercise in our exercises array
   const [ timeLeft, setTimeLeft ] = useState(exercises[0].duration); // tracks time remaining in current exercise
@@ -43,8 +61,11 @@ export default function Timer()  {
       let newTimeLeft = currTimeLeft - 1;
       if (newTimeLeft < 0) { // if newTimeLeft is less than 0...
         if (rtnIdx + 1 >= exercises.length) { // ...AND we're on the final index in the exercises array
-          resetWorkout(); //...reset the workout
-          console.log("congrats, exercise routine is complete"); // TODO: confetti effect onscreen?
+          setWorkoutComplete(true); // setWorkoutComplete(true) to fire confetti!
+          setTimeout(() => {
+            resetWorkout(); //...reset the workout after 3s delay (so confetti can be seen)
+            console.log("congrats, exercise routine is complete");
+          }, 3000);
           return 0;
         } else { // else, we're finished with current exercise but not the whole routine
           setRtnIdx(currRtnIdx => ( currRtnIdx + 1 )); // ...increment rtnIdx method to move to next exercise...
@@ -81,6 +102,7 @@ export default function Timer()  {
   function resetWorkout(){
     setStopwatchOn(false);
     setWorkoutStarted(false);
+    setWorkoutComplete(false);
     setRtnIdx(0);
     setTimeLeft(exercises[0].duration);
   }
@@ -97,13 +119,15 @@ export default function Timer()  {
           <h1>{exercises[rtnIdx].name.toUpperCase()}</h1>
         </div>
 
+        <Confetti className={styles.confettiOverlay} active={workoutComplete} config={confettiConfig} />
+
         <div className={styles.progressBarBox}>
           <ProgressBar
             barBaseHeight={barBaseHeight}
             timeLeft={timeLeft}
             totalDuration={exercises[rtnIdx].duration}
           />
-          <h1>TIME LEFT: {timeLeft}</h1>
+        <h1>TIME LEFT: {timeLeft}s</h1>
         </div>
       </div>
 
@@ -117,6 +141,7 @@ export default function Timer()  {
             <button onClick={ () => resetWorkout() } className={styles.butn}>RESET</button>
           </>
         }
+        <button onClick={ () => setWorkoutComplete(true) } className={styles.butn}>Confetti!</button>
       </div>
       { exercises[rtnIdx+1] && <h3>Up Next: {exercises[rtnIdx+1].name}</h3> }
     </div>

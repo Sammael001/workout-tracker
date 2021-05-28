@@ -14,13 +14,19 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
+}
+.confettiOverlay {
+  width: 1px;
+  height: 1px;
+  background-color: red;
 }
 
 .title {
   font-family: 'Odibee Sans', cursive;
   font-size: 4rem;
   letter-spacing: 0.2rem;
-  /* margin-bottom: 1rem; */
+  margin-top: 0;
 }
 
 .timerMainBox {
@@ -56,6 +62,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 300px;
 }
 
 .butn {
