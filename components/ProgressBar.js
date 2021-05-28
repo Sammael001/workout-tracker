@@ -4,44 +4,24 @@ import { useState, useEffect } from "react";
 // TO DO: move this timer logic into parent timer.js
 // this ProgressBar should only receive fillHeight after the value is already calculated
 
-export default function ProgressBar({ duration }) {
-  const [ fillHeight, setFillHeight ] = useState(0);
-  const [ timerOn, setTimerOn ] = useState(false);
-  const barBaseHeight = 300;
-  // we receive duration from parent timer.js
-  // take barBaseHeight (ex: 300) and divide by duration (ex: 30) to get amtToIncrease (ex: 10)
-  const amtToIncrease = barBaseHeight / duration;
+export default function ProgressBar({ barBaseHeight, timeLeft, totalDuration }) {
+  // to calculate <ProgressBar/> rendering values, pass down barBaseHeight, timeLeft and totalDuration
+  function getFillHeight() {
+    // divide barBaseheight by totalDuration to get amtToIncrease (EX: 300 / 30 = 10)
+    const amtToIncrease = barBaseHeight / totalDuration;
+    // subtract secondsLeft from totalDuration to get secondsElapsed (EX: 30 - 25 = 5)
+    const secondsElapsed = totalDuration - timeLeft;
+    // multiply secondsElapsed by amtToIncrease to get fillHeight (EX: 5 * 10 = 50)
+    return secondsElapsed * amtToIncrease;
+  }
+  // TO DO: in keeping with the code below, have getFillHeight return an array with 2 vars, startFillHeight and endFillHeight
+  // animate transition between the two
 
-  // increase fillHeight by amtToIncrease every second...unless fillHeight >= barBaseHeight
-  // in that case, stop the timer and call a parent method to initiate the next exercise
-  useEffect(() => {
-    // https://www.youtube.com/watch?v=sSWGdj8a5Fs
-    console.log("running useEffect!");
-    let interval = null;
-
-    if (timerOn) {
-      interval = setInterval(() => {
-        setFillHeight(prevFillHeight => prevFillHeight + amtToIncrease)
-        // instead of directly calling setFillHeight, call helper func tick()
-        // tick evaluates whether to reset setFillHeight to 0 (if it's about to exceed barBaseHeight) or to increment fillHeight
-      }, 1000);
-    } else {
-      clearInterval(interval); // makes sure interval is cleared if we navigate away from this page
-    }
-
-    function tick() {
-      // this function will be called once a second, by setInterval, until cleared
-      // this function first checks if fillHeight <= barBaseHeight
-          // if so, here we setFillHeight(prevFillHeight => prevFillHeight + amtToIncrease)
-      // else, fillHeight is at or greater than barBaseHeight
-          // in that case, set fillHeight to 0 and call parent method that asks for next exercise; will obtain new duration prop and force a rerender
-      // we'll still have an issue with the timer not automatically restarting each time a new exercise is given...
-      //...we may resolve this by passing in a prop which is FALSE for the 1st exercise and TRUE for others, which is taken as the initial value for the "timerOn" pcOfSt8
-    }
-
-    return () => {clearInterval(interval)}
-  }, [timerOn]); // useEffect ONLY runs when timer is started or stopped
-
+  // TO DO:
+  // 1) pass in additional prop "stopwatchOn" which determines if bar should be animating or not (prevents animation firing when page is loaded)
+  // *) assign static (non-animating) class if !stopwatchOn
+  // 2) barFilledGray animation should grow smoothly from a height of ((secondsElapsed * amtToIncrease) - amtToIncrease), to (secondsElapsed * amtToIncrease), in 1 second
+  // EX: animate transition from ((5*10)-10) = 40(px), to (5*10) = 50(px)
 
   return (
     <>
@@ -49,18 +29,11 @@ export default function ProgressBar({ duration }) {
         <div className="barFilled">
         </div>
       </div>
-      <div>
-        <h3>{fillHeight}</h3>
-        <button onClick={() => setTimerOn(true)}>Start</button>
-        <button onClick={() => setTimerOn(false)}>Stop</button>
-        <button onClick={() => setTimerOn(true)}>Resume</button>
-        <button onClick={() => setFillHeight(0)}>Reset</button>
-      </div>
       <style jsx>
       {`
         /* the base color of the progress bar is green */
         .barBase {
-          height: ${barBaseHeight}px;
+          height: ${ barBaseHeight }px;
           width: 50px;
           background-color: #a6ff4d;
         }
@@ -68,11 +41,35 @@ export default function ProgressBar({ duration }) {
         /* gradually the height of barFilled should increase, hiding more of the barBase until it is fully covered */
         .barFilled {
           width: 50px;
-          height: ${fillHeight}px;
+          height: ${ getFillHeight() }px;
           background-color: gray;
         }
-        `}
+      `}
       </style>
     </>
   );
 };
+
+
+// the following code is broken: the animation begins as soon as the page loads, and does not stop when the timer is paused
+// /* the base color of the progress bar is green */
+// .barGreenBase {
+//   height: ${ barBaseHeight }px;
+//   width: 50px;
+//   background-color: #a6ff4d;
+// }
+//
+// @keyframes growBar {
+//   from {height: 1px;}
+//   to {height: ${ barBaseHeight }px;}
+// }
+//
+// /* gradually the height of barFilled should increase, hiding more of the barGreenBase until it is fully covered */
+// .barFilledGray {
+//   width: 50px;
+//   height: 1px;
+//   background-color: gray;
+//   animation-name: growBar;
+//   animation-duration: ${totalDuration}s;
+//   animation-timing-function: linear;
+// }

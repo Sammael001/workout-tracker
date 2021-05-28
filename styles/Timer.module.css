@@ -51,7 +51,7 @@
   border-radius: 10%;
 }
 
-.ringBox {
+.progressBarBox {
   display: flex;
   flex-direction: column;
   justify-content: center;
