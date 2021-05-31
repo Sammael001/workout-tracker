@@ -10,6 +10,7 @@ const Layout = ({children}) => {
         <title>uFIT</title>
         <meta name="description" content="Demo fitness app created with NextJS and create-next-app" />
         <link rel="icon" href="/favicon.ico" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossOrigin="anonymous" />
       </Head>
 
       <div className={styles.container}>

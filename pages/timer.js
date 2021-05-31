@@ -15,8 +15,8 @@ export default function Timer()  {
     workoutName: "Abs Routine 1",
     exercises: [
       { name: "plank", imgSrc: "plank-1.png", duration: "20" }, // <-- setting durations to strings bc when we load from localStorage, we'll be dealing with strings
-      // { name: "rest", imgSrc: "rest-1.png", duration: "5" },
-      // { name: "leg lifts", imgSrc: "leg-lift-1.png", duration: "20" },
+      { name: "rest", imgSrc: "rest-1.png", duration: "5" },
+      { name: "leg lifts", imgSrc: "leg-lift-1.png", duration: "20" },
       // { name: "rest", imgSrc: "rest-1.png", duration: "5" },
       // { name: "crunches", imgSrc: "crunch-1.png", duration: "15" },
       // { name: "rest", imgSrc: "rest-1.png", duration: "5" },
@@ -40,12 +40,12 @@ export default function Timer()  {
 
   // start with default routine loaded from local vars, later this can be loaded from localStorage
   const [ routine, setRoutine ] = useState(defaultRoutine);
-  const [ workoutStarted, setWorkoutStarted ] = useState(false);
-  const [ workoutComplete, setWorkoutComplete ] = useState(false);
   const { workoutName, exercises } = routine; // destruc workoutName and exercises array from routine obj
+  const [ workoutStarted, setWorkoutStarted ] = useState(false); // hides pause/reset/resume buttons when false
+  const [ workoutComplete, setWorkoutComplete ] = useState(false); // triggers confetti when set to "true"
   const [ rtnIdx, setRtnIdx ] = useState(0); // this is array index for the current exercise in our exercises array
   const [ timeLeft, setTimeLeft ] = useState(exercises[0].duration); // tracks time remaining in current exercise
-  const [ stopwatchOn, setStopwatchOn ] = useState(false);
+  const [ stopwatchOn, setStopwatchOn ] = useState(false); // controls whether we're calling tick()
 
   // to calculate <ProgressBar/> rendering values, pass down barBaseHeight, timeLeft and exercises[rtnIdx].duration
   // divide barBaseheight by duration to get amtToIncrease (EX: 300 / 30 = 10)
@@ -58,7 +58,7 @@ export default function Timer()  {
     // this function will be called once a second, by setInterval, until cleared
     setTimeLeft(currTimeLeft => {
       // NOTE: we can't view timeLeft directly (always max value), so we must evaluate currTimeLeft inside cb here
-      let newTimeLeft = currTimeLeft - 1;
+      let newTimeLeft = currTimeLeft - 1; // decrement currTimeLeft by 1 (second)
       if (newTimeLeft < 0) { // if newTimeLeft is less than 0...
         if (rtnIdx + 1 >= exercises.length) { // ...AND we're on the final index in the exercises array
           setWorkoutComplete(true); // setWorkoutComplete(true) to fire confetti!
@@ -66,7 +66,7 @@ export default function Timer()  {
             resetWorkout(); //...reset the workout after 3s delay (so confetti can be seen)
             console.log("congrats, exercise routine is complete");
           }, 3000);
-          return 0;
+          return 0; // return 0 to reset timeLeft
         } else { // else, we're finished with current exercise but not the whole routine
           setRtnIdx(currRtnIdx => ( currRtnIdx + 1 )); // ...increment rtnIdx method to move to next exercise...
           return exercises[rtnIdx + 1].duration; // ...and return duration of NEXT exercise to setTimeLeft call
@@ -81,7 +81,7 @@ export default function Timer()  {
     console.log("running useEffect!");
     let interval = null;
 
-    if (stopwatchOn) {
+    if (stopwatchOn) { // if stopwatchOn, start calling tick()
       interval = setInterval(() => {
         tick(); // tick sets the timeLeft for the exercise, increments rtnIdx and/or calls setStopwatchOn as needed
       }, 1000);
@@ -91,7 +91,7 @@ export default function Timer()  {
 
     return () => {clearInterval(interval)} // makes sure interval is cleared if we navigate away from this page
     },
-    [stopwatchOn, rtnIdx] // useEffect ONLY re-runs when stopwatchOn or rtnIdx are changed
+    [stopwatchOn, rtnIdx] // dependencies array -- useEffect ONLY re-runs when stopwatchOn or rtnIdx are changed
   );
 
   function startWorkout(){
@@ -100,11 +100,11 @@ export default function Timer()  {
   };
 
   function resetWorkout(){
-    setStopwatchOn(false);
-    setWorkoutStarted(false);
-    setWorkoutComplete(false);
-    setRtnIdx(0);
-    setTimeLeft(exercises[0].duration);
+    setStopwatchOn(false); // stop calling tick()
+    setWorkoutStarted(false); // hide all buttons except start
+    setWorkoutComplete(false); // reset this var to allow confetti re-triggering
+    setRtnIdx(0); // reset rtnIdx to 1st exercise in array
+    setTimeLeft(exercises[0].duration); // reset timeLeft to duration of 1st exercise
   }
 
   return (
@@ -131,7 +131,7 @@ export default function Timer()  {
         </div>
       </div>
 
-      <div className={styles.buttonsDiv}>
+      <div>
         { !workoutStarted && <button onClick={ () => startWorkout() } className={styles.butn}>START</button> }
         {
           workoutStarted &&
@@ -141,7 +141,6 @@ export default function Timer()  {
             <button onClick={ () => resetWorkout() } className={styles.butn}>RESET</button>
           </>
         }
-        <button onClick={ () => setWorkoutComplete(true) } className={styles.butn}>Confetti!</button>
       </div>
       { exercises[rtnIdx+1] && <h3>Up Next: {exercises[rtnIdx+1].name}</h3> }
     </div>
@@ -151,7 +150,7 @@ export default function Timer()  {
 
 // when we click START to begin the routine, setRtnIdx to 0 -- this is used to track the current exercise we're on
 // this way we can ref exercises[rtnIdx].name, exercises[rtnIdx].imgSrc, exercises[rtnIdx].duration and so on
-// use pcOfSt8 "countdown" to track seconds remaining in current exercise, start at parseInt(exercises[rtnIdx].duration)
+// use pcOfSt8 "timeLeft" to track seconds remaining in current exercise, start at parseInt(exercises[rtnIdx].duration)
 // setInterval to decrement countdown once per second, until we reach 0
 // at that point, clear the interval and increment rtnIdx
 // once rtnIdx === exercises.length, the routine is finished; display a completion message
