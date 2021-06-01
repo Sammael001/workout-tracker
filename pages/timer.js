@@ -1,3 +1,15 @@
+
+
+  // TO DO: extract timer logic, workout selection logic into 2 separate components
+  // so inside this timer.js component we can return:
+  // <div className={styles.mainCard}>
+  //   { haveSelected
+  //     ? <TimerComponent />
+  //     : <SelectRoutine />
+  //   }
+  // </div>
+
+
 import { useState, useEffect } from "react";
 
 import Image from "next/image";
@@ -24,6 +36,25 @@ export default function Timer()  {
     ]
   };
 
+  const demoSavedWorkouts = [
+    {
+      workoutName: "Demo Abs Workout",
+      exercises: [
+        { name: "plank", imgSrc: "plank-1.png", duration: "20" },
+        { name: "rest", imgSrc: "rest-1.png", duration: "5" },
+        { name: "crunches", imgSrc: "crunch-1.png", duration: "20" }
+      ]
+    },
+    {
+      workoutName: "Demo Legs Workout",
+      exercises: [
+        { name: "leg lifts", imgSrc: "leg-lift-1.png", duration: "20" },
+        { name: "rest", imgSrc: "rest-1.png", duration: "5" },
+        { name: "lunges", imgSrc: "lunge-1.png", duration: "20" }
+      ]
+    }
+  ];
+
   const confettiConfig = {
     angle: 90,
     spread: 360,
@@ -38,20 +69,64 @@ export default function Timer()  {
     colors: ["#a864fd", "#29cdff", "#78ff44", "#ff718d", "#fdff6a"]
   };
 
-  // start with default routine loaded from local vars, later this can be loaded from localStorage
+  const [ savedWorkouts, setSavedWorkouts ] = useState(""); // stores either arr of workouts from localStorage, or demoSavedWorkouts arr
+  const [ didLoad, setDidLoad ] = useState(false); // var which keeps one useEffect call from running multiple times
+
+  // load workouts either from localStorage (if exists) or from demoSavedWorkouts, populate pcOfSt8 savedWorkouts
+  useEffect(() => {
+    let mySavedWorkouts = JSON.parse(window.localStorage.getItem("savedWorkouts")) || demoSavedWorkouts;
+    setSavedWorkouts(mySavedWorkouts); // set pcOfSt8 savedWorkouts
+    setDidLoad(true); // setDidLoad(true) to stop this useEffect call from running repeatedly
+  }, [didLoad]);
+
+  // if we haven't selected a workout yet, page initializes with selection prompt
+  const [ haveSelected, setHaveSelected ] = useState(false);
+  // once a routine name has been chosen, it will be stored as 'selectedRoutine'
+  const [ selectedRoutine, setSelectedRoutine ] = useState("");
+
+  // once we submit the routine selection form, these vals will be populated (we can remove defaultRoutine var then)
   const [ routine, setRoutine ] = useState(defaultRoutine);
   const { workoutName, exercises } = routine; // destruc workoutName and exercises array from routine obj
+
   const [ workoutStarted, setWorkoutStarted ] = useState(false); // hides pause/reset/resume buttons when false
   const [ workoutComplete, setWorkoutComplete ] = useState(false); // triggers confetti when set to "true"
   const [ rtnIdx, setRtnIdx ] = useState(0); // this is array index for the current exercise in our exercises array
   const [ timeLeft, setTimeLeft ] = useState(exercises[0].duration); // tracks time remaining in current exercise
   const [ stopwatchOn, setStopwatchOn ] = useState(false); // controls whether we're calling tick()
 
+
+  function handleChange(evt){
+    setSelectedRoutine(evt.target.value);
+  }
+
+  // called when we submit the routine selection form
+  function chooseRoutine(evt){
+    evt.preventDefault();
+    setHaveSelected(true);
+    console.log(`selectedRoutine: ${selectedRoutine}`);
+    // DO THIS HERE: loop through savedWorkouts arr, find one with key of selectedRoutine, store as myObj
+    // call setRoutine with that obj (which contains workoutName and exercises array)
+  }
+
+  // populates list of available routines to choose from
+  function giveOptions(){
+    // was encountering error where savedWorkouts was NOT an array (undefined?) at first, then it was
+    if (Array.isArray(savedWorkouts)) {
+      const myMap = savedWorkouts.map(elem => (
+        <option key={elem.workoutName} value={elem.workoutName}>{elem.workoutName}</option>
+      ));
+      return myMap;
+    } else {
+      // included this option here to prevent error "savedWorkouts.map is not a function" when trying to map an undefined var
+      return <option value="foobar">foobar</option>
+    }
+  };
+
+
   // to calculate <ProgressBar/> rendering values, pass down barBaseHeight, timeLeft and exercises[rtnIdx].duration
   // divide barBaseheight by duration to get amtToIncrease (EX: 300 / 30 = 10)
   // subtract secondsLeft from duration to get secondsElapsed (EX: 30 - 25 = 5)
   // multiply secondsElapsed by amtToIncrease to get fillHeight (EX: 5 * 10 = 50)
-
   const barBaseHeight = 300;
 
   function tick() {
@@ -109,44 +184,62 @@ export default function Timer()  {
 
   return (
     <div className={styles.mainCard}>
-      <h1 className={styles.title}>{workoutName}</h1>
+    {
+      haveSelected
+      ? <>
+          <h1 className={styles.title}>{workoutName}</h1>
 
-      <div className={styles.timerMainBox}>
-        <div className={styles.exerciseBox}>
-          <div className={styles.exerciseImg}>
-            <Image src={`/images/${exercises[rtnIdx].imgSrc}`} width={200} height={200} />
+          <div className={styles.timerMainBox}>
+            <div className={styles.exerciseBox}>
+              <div className={styles.exerciseImg}>
+                <Image src={`/images/${exercises[rtnIdx].imgSrc}`} width={200} height={200} />
+              </div>
+              <h1>{exercises[rtnIdx].name.toUpperCase()}</h1>
+            </div>
+
+            <Confetti className={styles.confettiOverlay} active={workoutComplete} config={confettiConfig} />
+
+            <div className={styles.progressBarBox}>
+              <ProgressBar
+                barBaseHeight={barBaseHeight}
+                timeLeft={timeLeft}
+                totalDuration={exercises[rtnIdx].duration}
+              />
+            <h1>TIME LEFT: {timeLeft}s</h1>
+            </div>
           </div>
-          <h1>{exercises[rtnIdx].name.toUpperCase()}</h1>
-        </div>
 
-        <Confetti className={styles.confettiOverlay} active={workoutComplete} config={confettiConfig} />
+          <div>
+            { !workoutStarted && <button onClick={ () => startWorkout() } className={styles.butn}>START</button> }
+            {
+              workoutStarted &&
+              <>
+                {stopwatchOn && <button onClick={ () => setStopwatchOn(false) } className={styles.butn}>PAUSE</button>}
+                {!stopwatchOn && <button onClick={ () => setStopwatchOn(true) } className={styles.butn}>RESUME</button>}
+                <button onClick={ () => resetWorkout() } className={styles.butn}>RESET</button>
+              </>
+            }
+          </div>
+          { exercises[rtnIdx+1] && <h3>Up Next: {exercises[rtnIdx+1].name}</h3> }
+        </>
+      : <>
+          <form onSubmit={chooseRoutine}>
+            <select name="selectedRoutine" value={selectedRoutine} onChange={handleChange} required>
+              <option value=""></option>
+              { giveOptions() }
+            </select>
+            <button type="submit">OK</button>
+          </form>
+        </>
+    }
 
-        <div className={styles.progressBarBox}>
-          <ProgressBar
-            barBaseHeight={barBaseHeight}
-            timeLeft={timeLeft}
-            totalDuration={exercises[rtnIdx].duration}
-          />
-        <h1>TIME LEFT: {timeLeft}s</h1>
-        </div>
-      </div>
-
-      <div>
-        { !workoutStarted && <button onClick={ () => startWorkout() } className={styles.butn}>START</button> }
-        {
-          workoutStarted &&
-          <>
-            {stopwatchOn && <button onClick={ () => setStopwatchOn(false) } className={styles.butn}>PAUSE</button>}
-            {!stopwatchOn && <button onClick={ () => setStopwatchOn(true) } className={styles.butn}>RESUME</button>}
-            <button onClick={ () => resetWorkout() } className={styles.butn}>RESET</button>
-          </>
-        }
-      </div>
-      { exercises[rtnIdx+1] && <h3>Up Next: {exercises[rtnIdx+1].name}</h3> }
     </div>
   );
 };
 
+// <option value="Abs 1">Abs 1</option>
+// <option value="Legs 2">Legs 2</option>
+// <option value="Core 3">Core 3</option>
 
 // when we click START to begin the routine, setRtnIdx to 0 -- this is used to track the current exercise we're on
 // this way we can ref exercises[rtnIdx].name, exercises[rtnIdx].imgSrc, exercises[rtnIdx].duration and so on

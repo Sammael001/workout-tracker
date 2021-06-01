@@ -7,13 +7,6 @@
 // we should also be able to EDIT a saved routine, pulling it from localStorage to change durations or exercises
 // final step is to make the stored routines selectable inside timer.js
 
-// TO DO: get exercises within the routine to wrap into a 2nd column if we have more than 10
-// ^^ restyle exercise entries into bordered tiles? as shown vv :
-//       |  heel press
-//     1 |  20 s.
-//       |  [^][v][X]
-// TO DO: allow re-ordering of added exercises
-// TO DO: allow deletion of exercises
 // TO DO: allow saving to localStorage
 // TO DO: allow loading a stored routine which can be modified
 // TO DO: decide where we will manage existing routines (modify + delete)
@@ -21,6 +14,8 @@
 
 import styles from "../styles/Builder.module.css";
 import { useState } from "react";
+// import useLocalStorageState from "../hooks/useLocalStorageState";
+
 import { v4 as uuidv4 } from 'uuid';
 
 let demoRoutine = {
@@ -30,14 +25,21 @@ let demoRoutine = {
     { name: "rest", imgSrc: "my-img-src.png", duration: "5", id: "222" },
     { name: "calf raises", imgSrc: "my-img-src.png", duration: "30", id: "333" },
     { name: "rest", imgSrc: "my-img-src.png", duration: "5", id: "444" },
-    { name: "fire hydrants", imgSrc: "my-img-src.png", duration: "30", id: "555" }
+    { name: "fire hydrants", imgSrc: "my-img-src.png", duration: "30", id: "555" },
+    { name: "rest", imgSrc: "my-img-src.png", duration: "5", id: "666" },
+    { name: "lunges", imgSrc: "my-img-src.png", duration: "30", id: "777" },
+    { name: "rest", imgSrc: "my-img-src.png", duration: "5", id: "888" },
+    { name: "crunches", imgSrc: "my-img-src.png", duration: "30", id: "999" },
+    { name: "rest", imgSrc: "my-img-src.png", duration: "5", id: "000" },
   ]
 };
 
 export default function Builder()  {
+  // const savedWorkouts = JSON.parse(window.localStorage.getItem("savedWorkouts"));
   const [ workoutName, setWorkoutName ] = useState(demoRoutine.workoutName);
-  const [ isEditing, setIsEditing ] = useState(false);
   const [ routine, setRoutine ] = useState(demoRoutine.exercises);
+
+  const [ isEditing, setIsEditing ] = useState(false);
   const [ exercise, setExercise ] = useState("");
   const [ duration, setDuration ] = useState("");
 
@@ -48,9 +50,11 @@ export default function Builder()  {
     if (name === "workoutName") setWorkoutName(evt.target.value);
   }
 
+  // allows name of routine to be changed
   function submitNameChange(evt){
     evt.preventDefault();
     setIsEditing(false);
+    // submitNameChange receives the whole workoutName form, but target[0] is the name input field
     setWorkoutName(evt.target[0].value);
   }
 
@@ -65,17 +69,43 @@ export default function Builder()  {
     setDuration("");
   }
 
-  // add entire routine, plus its name, to localStorage
+  function deleteEntry(idToDelete){
+    let filtered = routine.filter((elem) => elem.id !== idToDelete);
+    setRoutine(filtered);
+  }
+
+  // move exercises up/down in routine order
+  function swapEntries(idx, direction){
+    // will rcv idx of item to be swapped and the direction: "up" or "down"
+    // swap syntax: [ myArr[1], myArr[2] ] = [ myArr[2], myArr[1] ];
+    let routineCopy = [...routine];
+    // check for edge cases -- swapping down when we're at the last idx, or up when we're at the 0th idx
+    if (idx === 0 && direction === "up") {
+      // shift first element from start, push onto end of array
+      let removed = routineCopy.shift();
+      routineCopy.push(removed);
+    } else if (idx === routine.length-1 && direction === "down") {
+      // pop last element from end, unshift onto start of array
+      let removed = routineCopy.pop();
+      routineCopy.unshift(removed);
+    } else if (direction === "up") {
+      [ routineCopy[idx], routineCopy[idx-1] ] = [ routineCopy[idx-1], routineCopy[idx] ];
+    } else { // swap going down
+      [ routineCopy[idx], routineCopy[idx+1] ] = [ routineCopy[idx+1], routineCopy[idx] ];
+    };
+    setRoutine(routineCopy);
+  }
+
+  // add entire routine, plus its name, to an array in localStorage under key "savedWorkouts"
+  // !!!! NOTE: workouts with same workoutName will NOT overwrite each other, must check for them!
   function saveNewWorkout(){
-    // compile pcsOfSt8 workoutName, routine, into obj that looks like so:
-    // {
-    //   workoutName: "Legs Routine 1",
-    //   exercises: [
-    //     { name: "heel press", imgSrc: "my-img-src.png", duration: "30", id: "111" },
-    //     { ... },
-    //     ...
-    //   ]
-    // }
+    // pull savedWorkouts from localStorage -- OR, if key of "savedWorkouts" does not exist in local, init savedWorkouts as empty obj
+    let savedArr = JSON.parse(window.localStorage.getItem("savedWorkouts")) || [];
+    // push a new obj into savedWorkouts arr (containing workoutName and routine arr)
+    savedArr = [...savedArr, { workoutName: workoutName, routine: [...routine] }];
+    // store savedWorkouts arr in localStorage under key "savedWorkouts"
+    window.localStorage.setItem("savedWorkouts", JSON.stringify(savedArr));
+
   }
 
   return (
@@ -103,6 +133,10 @@ export default function Builder()  {
                 <option value="Flutter Kicks">Flutter Kicks</option>
                 <option value="Squats">Squats</option>
                 <option value="Lunges">Lunges</option>
+                <option value="Plank">Plank</option>
+                <option value="Standing Leg Lifts">Standing Leg Lifts</option>
+                <option value="Reverse Crunches">Reverse Crunches</option>
+                <option value="Russian Twists">Russian Twists</option>
               </select>
             </label>
             <br/>
@@ -162,13 +196,13 @@ export default function Builder()  {
               )
           }
 
-          <ol>
-            { routine.map(exercise => (
+          <ol className={styles.routineList}>
+            { routine.map((exercise, idx) => (
               <li key={exercise.id} className={styles.routineListItem}>
                 {exercise.name} | {exercise.duration}s.
-                <button className={styles.iconButn}><i className="fas fa-arrow-alt-circle-up"></i></button>
-                <button className={styles.iconButn}><i className="fas fa-arrow-alt-circle-down"></i></button>
-                <button className={styles.iconButn}><i className="fas fa-trash-alt"></i></button>
+                <button onClick={() => swapEntries(idx, "up")} className={styles.iconButn}><i className="fas fa-arrow-alt-circle-up"></i></button>
+                <button onClick={() => swapEntries(idx, "down")} className={styles.iconButn}><i className="fas fa-arrow-alt-circle-down"></i></button>
+                <button onClick={() => deleteEntry(exercise.id)} className={styles.iconButn}><i className="fas fa-trash-alt"></i></button>
               </li>
             )) }
           </ol>
