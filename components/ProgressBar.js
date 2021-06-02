@@ -1,4 +1,11 @@
-// import styles from "../styles/ProgressBar.module.css";
+
+
+// to calculate <ProgressBar/> rendering values, pass down barBaseHeight, timeLeft and routine[rtnIdx].duration
+// divide barBaseheight by duration to get amtToIncrease (EX: 300 / 30 = 10)
+// subtract secondsLeft from duration to get secondsElapsed (EX: 30 - 25 = 5)
+// multiply secondsElapsed by amtToIncrease to get fillHeight (EX: 5 * 10 = 50)
+// const barBaseHeight = 300;
+
 import { useState, useEffect } from "react";
 
 export default function ProgressBar({ barBaseHeight, timeLeft, totalDuration }) {
@@ -30,6 +37,7 @@ export default function ProgressBar({ barBaseHeight, timeLeft, totalDuration }) 
       return endFillerHeight; // (EX: 50)
     }
   }
+  // console.log(`I'm ProgressBar and I received barBaseHeight ${barBaseHeight}, timeLeft ${timeLeft}, and totalDuration ${totalDuration}`);
 
   return (
     <>

@@ -1,8 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Odibee+Sans&display=swap');
 @import url("https://fonts.googleapis.com/css2?family=Ubuntu&display=swap");
 
-
-
 .mainCard {
   margin-bottom: 1rem;
   padding: 1rem;
@@ -26,6 +24,13 @@
   letter-spacing: 0.2rem;
   margin-top: 2rem;
   margin-bottom: 0.5rem;
+}
+
+.dialogBox {
+  width: 90vw;
+  border: 2px solid #bfff80;
+  text-align: center;
+  padding: 0.5rem;
 }
 
 .mainBox {
@@ -85,6 +90,9 @@
   color: #4d9900;
   cursor: pointer;
 }
+.addButn:disabled {
+  color: #a6bc8f;
+}
 /* ^^--  styles for the elements inside addNewBox --^^ */
 
 /* VV--  styles for the elements inside routineBox --VV */
@@ -97,11 +105,11 @@
   /* max-width: 50vw; */
   flex-grow: 2;
 }
-.routineName {
+.workoutName {
   margin: 0.5rem;
   padding: 0.5rem;
 }
-.routineTitleInput {
+.workoutNameInput {
   border: 2px solid #4d4d4d;
   background-color: #262626;
   padding: 0.5rem;
@@ -143,10 +151,13 @@
   box-shadow: -3px -3px #e6ffcc, 3px 3px #336600, -3px 3px #336600, 3px -3px #336600;
   transition: all 0.3s ease-in-out;
 }
-
 .butn:hover {
   background-color: #4d9900;
   cursor: pointer;
+}
+.butn:disabled {
+  background-color: #a6bc8f;
+  cursor: auto;
 }
 
 .iconButn {
@@ -156,7 +167,10 @@
 }
 .iconButn:hover {
   color: #4d9900;
-  cursor: pointer;
+  cursor: auto;
+}
+.iconButn:disabled {
+  color: #a6bc8f;
 }
 .bigIconButn {
   font-size: 1.5rem;

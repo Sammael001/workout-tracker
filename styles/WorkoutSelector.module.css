@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Odibee+Sans&display=swap');
+
+.title {
+  font-family: 'Odibee Sans', cursive;
+  font-size: 3rem;
+  letter-spacing: 0.2rem;
+}
+
+.butn {
+  background-color: #a6ff4d;
+  font-family: 'Odibee Sans', cursive;
+  letter-spacing: 0.15rem;
+  font-size: 1.5rem;
+  border: none;
+  padding: 0.5rem;
+  margin: 0.5rem 1rem;
+  border-radius: 10%;
+  box-shadow: -3px -3px #e6ffcc, 3px 3px #336600, -3px 3px #336600, 3px -3px #336600;
+  transition: all 0.3s ease-in-out;
+}
+.butn:hover {
+  background-color: #4d9900;
+  cursor: pointer;
+}
+
+.workoutInput {
+  border: 2px solid #4d4d4d;
+  background-color: #262626;
+  padding: 0.5rem;
+  margin: 0.5rem;
+  color: honeydew;
+  font-size: 1.75rem;
+  font-family: 'Ubuntu', sans-serif;
+}
