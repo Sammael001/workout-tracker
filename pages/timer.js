@@ -24,17 +24,11 @@ import ProgressBar from "../components/ProgressBar";
 import WorkoutSelector from "../components/WorkoutSelector";
 // REACT HOOKS STOPWATCH -> https://www.youtube.com/watch?v=sSWGdj8a5Fs
 
-import { defaultWorkout, demoSavedWorkouts, confettiConfig } from "../vars/workoutVars";
-
-// custom hook which loads data from localStorage (if found), or demoSavedWorkouts if not found
-import useLocalStorage from "../hooks/useLocalStorage";
+import { defaultWorkout, confettiConfig } from "../vars/workoutVars";
 
 import styles from "../styles/Timer.module.css";
 
 export default function Timer()  {
-  // custom hook which loads savedWorkouts data from localStorage, if it exists...if not, loads from demoSavedWorkouts
-  const [ savedWorkouts, setSavedWorkouts ] = useLocalStorage(demoSavedWorkouts);
-
   // if we haven't selected a workout yet, page initializes to show WorkoutSelector menu component
   const [ showMenu, setShowMenu ] = useState(true);
 
@@ -49,29 +43,11 @@ export default function Timer()  {
   const [ stopwatchOn, setStopwatchOn ] = useState(false); // controls whether we're calling tick()
 
   // called when we submit the routine selection form from <WorkoutSelector />
-  function chooseWorkout(selected){
+  function chooseWorkout(selectedWorkoutObj){
     setShowMenu(false);
-    savedWorkouts.forEach(elem => {
-      if (elem.workoutName === selected) {
-        setMyWorkout(elem); // set myWorkout to the chosen workout obj
-        setTimeLeft(elem.routine[0].duration); // set timeLeft to duration of 1st exercise in chosen workout's routine
-      }
-    });
+    setMyWorkout(selectedWorkoutObj); // set myWorkout to the chosen workout obj
+    setTimeLeft(selectedWorkoutObj.routine[0].duration); // set timeLeft to duration of 1st exercise in chosen workout's routine
   }
-
-  // populates list of available workouts to choose from
-  function giveOptions(){
-    // was encountering error where savedWorkouts was NOT an array (undefined?) at first, then it was
-    if (Array.isArray(savedWorkouts)) {
-      const myMap = savedWorkouts.map(elem => (
-        <option key={elem.workoutName} value={elem.workoutName}>{elem.workoutName}</option>
-      ));
-      return myMap;
-    } else {
-      // included this option here to prevent error "savedWorkouts.map is not a function" when trying to map an undefined var
-      return <option value="foobar">foobar</option>
-    }
-  };
 
   function tick() {
     // this function will be called once a second, by setInterval, until cleared
@@ -130,7 +106,7 @@ export default function Timer()  {
     <div className={styles.mainCard}>
     {
       showMenu
-      ? <WorkoutSelector workoutChoices={ giveOptions() } chooseWorkout={chooseWorkout} />
+      ? <WorkoutSelector chooseWorkout={chooseWorkout} />
       : <>
           <h1 className={styles.title}>
             {workoutName}

@@ -1,9 +1,9 @@
 const defaultWorkout = {
   workoutName: "Abs Workout 1",
   routine: [
-    { name: "plank", imgSrc: "plank-1.png", duration: "20" }, // <-- setting durations to strings bc when we load from localStorage, we'll be dealing with strings
-    { name: "rest", imgSrc: "rest-1.png", duration: "5" },
-    { name: "leg lifts", imgSrc: "leg-lift-1.png", duration: "20" },
+    { name: "plank", imgSrc: "plank-1.png", duration: "20", id: "8550489383" }, // <-- setting durations to strings bc when we load from localStorage, we'll be dealing with strings
+    { name: "rest", imgSrc: "rest-1.png", duration: "5", id: "93783672727" },
+    { name: "leg lifts", imgSrc: "leg-lift-1.png", duration: "20", id: "542546457" },
     // { name: "rest", imgSrc: "rest-1.png", duration: "5" },
     // { name: "crunches", imgSrc: "crunch-1.png", duration: "15" },
     // { name: "rest", imgSrc: "rest-1.png", duration: "5" },
@@ -15,17 +15,17 @@ const demoSavedWorkouts = [
   {
     workoutName: "Demo Abs Workout",
     routine: [
-      { name: "plank", imgSrc: "plank-1.png", duration: "20" },
-      { name: "rest", imgSrc: "rest-1.png", duration: "5" },
-      { name: "crunches", imgSrc: "crunch-1.png", duration: "20" }
+      { name: "plank", imgSrc: "plank-1.png", duration: "20", id: "545726826" },
+      { name: "rest", imgSrc: "rest-1.png", duration: "5", id: "8704683683658" },
+      { name: "crunches", imgSrc: "crunch-1.png", duration: "20", id: "8794937386" }
     ]
   },
   {
     workoutName: "Demo Legs Workout",
     routine: [
-      { name: "leg lifts", imgSrc: "leg-lift-1.png", duration: "20" },
-      { name: "rest", imgSrc: "rest-1.png", duration: "5" },
-      { name: "lunges", imgSrc: "lunge-1.png", duration: "20" }
+      { name: "leg lifts", imgSrc: "leg-lift-1.png", duration: "20", id: "783742527425" },
+      { name: "rest", imgSrc: "rest-1.png", duration: "5", id: "76925727" },
+      { name: "lunges", imgSrc: "lunge-1.png", duration: "20", id: "989677368368" }
     ]
   }
 ];
