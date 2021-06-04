@@ -45,3 +45,25 @@ nav .logo {
   /* but because we set the .logo class to margin-right: "auto", this element pushes itself all the way over to the left */
   margin-left: 0.5rem;
 }
+
+.butn {
+  background-color: #a6ff4d;
+  /* font-family: 'Ubuntu', sans-serif; */
+  font-family: 'Odibee Sans', cursive;
+  letter-spacing: 0.15rem;
+  font-size: 1.75rem;
+  border: none;
+  padding: 0.5rem;
+  margin: 0.5rem 1rem;
+  border-radius: 10%;
+  box-shadow: -3px -3px #e6ffcc, 3px 3px #336600, -3px 3px #336600, 3px -3px #336600;
+  transition: all 0.3s ease-in-out;
+}
+.butn:hover {
+  background-color: #4d9900;
+  cursor: pointer;
+}
+.butn:disabled {
+  background-color: #a6bc8f;
+  cursor: auto;
+}

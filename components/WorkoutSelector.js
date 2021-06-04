@@ -53,7 +53,7 @@ function WorkoutSelector(props) {
           <option value=""></option>
           { giveOptions() }
         </select>
-        <button className={styles.butn} type="submit">OK</button>
+        <button className="butn" type="submit">OK</button>
       </form>
     </>
   );

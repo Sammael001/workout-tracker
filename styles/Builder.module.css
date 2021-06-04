@@ -46,9 +46,8 @@
   margin-top: 1rem;
 }
 
-.butn {
+/* .butn {
   background-color: #a6ff4d;
-  /* font-family: 'Ubuntu', sans-serif; */
   font-family: 'Odibee Sans', cursive;
   letter-spacing: 0.15rem;
   font-size: 1.75rem;
@@ -66,7 +65,7 @@
 .butn:disabled {
   background-color: #a6bc8f;
   cursor: auto;
-}
+} */
 
 .iconButn {
   background-color: #262626;

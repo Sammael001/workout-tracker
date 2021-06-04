@@ -1,25 +1,16 @@
 
-  // TO DO: add button beside workout name which allows you to select a different workout (brings up WorkoutSelector component again)
-  // TO DO: style WorkoutSelector
 
-  // TO DO: extract timer logic, workout selection logic into 2 separate components
-  // so inside this timer.js component we can return:
-  // <div className={styles.mainCard}>
-  //   { showMenu
-  //     ? <TimerComponent />
-  //     : <WorkoutSelector />
-  //   }
-  // </div>
+// NOTE: each whole workout obj is a WORKOUT
+// inside each WORKOUT we have a workoutName, and a ROUTINE (an array of EXERCISES)
 
-  // NOTE: each whole workout obj is a WORKOUT
-  // inside each WORKOUT we have a workoutName, and a ROUTINE (an array of EXERCISES)
-
+// TO DO: completion bar showing how much of the routine has been completed
 
 import { useState, useEffect } from "react";
 
 import Image from "next/image";
 import Confetti from 'react-dom-confetti';
 
+import CompletionBar from "../components/CompletionBar";
 import ProgressBar from "../components/ProgressBar";
 import WorkoutSelector from "../components/WorkoutSelector";
 // REACT HOOKS STOPWATCH -> https://www.youtube.com/watch?v=sSWGdj8a5Fs
@@ -111,10 +102,13 @@ export default function Timer()  {
           <h1 className={styles.title}>
             {workoutName}
             {' '}
-            <span className={styles.greenIcon} onClick={() => setShowMenu(true)}>
+            <button className={styles.greenIcon} onClick={() => setShowMenu(true)} disabled={stopwatchOn}>
               <i className="fas fa-caret-square-down"></i>
-            </span>
+            </button>
           </h1>
+
+          <CompletionBar timeLeft={timeLeft} routine={routine} rtnIdx={rtnIdx} />
+
 
           <div className={styles.timerMainBox}>
             <div className={styles.exerciseBox}>
@@ -137,13 +131,13 @@ export default function Timer()  {
           </div>
 
           <div>
-            { !workoutStarted && <button onClick={ () => startWorkout() } className={styles.butn}>START</button> }
+            { !workoutStarted && <button onClick={ () => startWorkout() } className="butn">START</button> }
             {
               workoutStarted &&
               <>
-                {stopwatchOn && <button onClick={ () => setStopwatchOn(false) } className={styles.butn}>PAUSE</button>}
-                {!stopwatchOn && <button onClick={ () => setStopwatchOn(true) } className={styles.butn}>RESUME</button>}
-                <button onClick={ () => resetWorkout() } className={styles.butn}>RESET</button>
+                {stopwatchOn && <button onClick={ () => setStopwatchOn(false) } className="butn">PAUSE</button>}
+                {!stopwatchOn && <button onClick={ () => setStopwatchOn(true) } className="butn">RESUME</button>}
+                <button onClick={ () => resetWorkout() } className="butn">RESET</button>
               </>
             }
           </div>

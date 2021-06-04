@@ -6,7 +6,7 @@
   letter-spacing: 0.2rem;
 }
 
-.butn {
+/* .butn {
   background-color: #a6ff4d;
   font-family: 'Odibee Sans', cursive;
   letter-spacing: 0.15rem;
@@ -21,7 +21,7 @@
 .butn:hover {
   background-color: #4d9900;
   cursor: pointer;
-}
+} */
 
 .workoutInput {
   border: 2px solid #4d4d4d;

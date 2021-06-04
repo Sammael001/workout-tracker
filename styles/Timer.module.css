@@ -25,6 +25,7 @@
   font-size: 4rem;
   letter-spacing: 0.2rem;
   margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .timerMainBox {
@@ -63,9 +64,8 @@
   width: 300px;
 }
 
-.butn {
+/* .butn {
   background-color: #a6ff4d;
-  /* font-family: 'Ubuntu', sans-serif; */
   font-family: 'Odibee Sans', cursive;
   letter-spacing: 0.15rem;
   font-size: 1.75rem;
@@ -76,17 +76,22 @@
   box-shadow: -3px -3px #e6ffcc, 3px 3px #336600, -3px 3px #336600, 3px -3px #336600;
   transition: all 0.3s ease-in-out;
 }
-
 .butn:hover {
   background-color: #4d9900;
   cursor: pointer;
-}
+} */
 
 .greenIcon {
+  background-color: #1a1a1a;
+  border: none;
   font-size: 2rem;
   color: #a6ff4d;
 }
 .greenIcon:hover {
   cursor: pointer;
   color: #4d9900;
+}
+.greenIcon:disabled {
+  color: #a6bc8f;
+  cursor: auto;
 }
