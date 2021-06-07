@@ -3,8 +3,6 @@
 // NOTE: each whole workout obj is a WORKOUT
 // inside each WORKOUT we have a workoutName, and a ROUTINE (an array of EXERCISES)
 
-// TO DO: completion bar showing how much of the routine has been completed
-
 import { useState, useEffect } from "react";
 
 import Image from "next/image";
@@ -93,6 +91,34 @@ export default function Timer()  {
     setTimeLeft(routine[0].duration); // reset timeLeft to duration of 1st exercise
   }
 
+
+  // somehow the useEffect calls inside CompletionBar are causing bugs where rtnIdx (inside PARENT) is skipping ahead???
+  // when we don't call useEffect inside child component, the bug does not occur
+  // that's why we calculate total workout duration, secondsElapsed, pixelInc and percentInc inside parent
+  function giveCompletionBarProps() {
+    let totalDur = 0;
+    let secondsEl = 0;
+    let pixelInc = 0;
+    let percentInc = 0;
+    for (let i = 0; i < routine.length; i++) {
+      // tally up each duration to get the total num of seconds in routine
+      totalDur = totalDur + parseInt(routine[i].duration);
+      if (i < rtnIdx) {
+        // tally up all durations in routine PRIOR to current rtnIdx
+        secondsEl = secondsEl + parseInt(routine[i].duration);
+      }
+    }
+    // for a final total of secondsEl, we have to add the duration of the current exercise, minus timeLeft
+    secondsEl = secondsEl + (parseInt(routine[rtnIdx].duration) - timeLeft);
+    // console.log(`Seconds elapsed: ${secondsEl}`);
+    pixelInc = 400 / totalDur;
+    // secondsEl * pixelInc -- Math.floor() this -- is the total current width of the filler bar
+    percentInc = 100 / totalDur;
+    // secondsEl * percentInc -- Math.floor() this -- is the current workout completion percentage
+    // console.log(`TotalDuration: ${totalDur}`);
+    return { secondsEl: secondsEl, pixelInc: pixelInc, percentInc: percentInc };
+  }
+
   return (
     <div className={styles.mainCard}>
     {
@@ -107,7 +133,7 @@ export default function Timer()  {
             </button>
           </h1>
 
-          <CompletionBar timeLeft={timeLeft} routine={routine} rtnIdx={rtnIdx} />
+           <CompletionBar myProps={giveCompletionBarProps()} />
 
 
           <div className={styles.timerMainBox}>
