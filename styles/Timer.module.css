@@ -45,7 +45,9 @@
 }
 
 .exerciseImg {
-  background-color: #a6ff4d;
+  /*background-color: #a6ff4d;*/
+  /* color for active limb in exercise gifs is #88f007 */
+  background-color: gray;
   width: 300px;
   height: 300px;
   padding: 0.5rem;
