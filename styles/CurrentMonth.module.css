@@ -1,0 +1,27 @@
+
+.mainCard {
+  margin-bottom: 1rem;
+  /* padding: 1rem; */
+  width: 95%;
+  min-width: 95vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.dayOfWk {
+  color: black;
+  font-weight: bold;
+  font-size: 1.25rem;
+  padding: 1rem;
+  background-color: #a6ff4d;
+  border: 1px solid green;
+  /* margin: 0.5rem; */
+}
+.dayNamesRow {
+  width: 80vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

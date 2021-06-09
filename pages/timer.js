@@ -3,6 +3,12 @@
 // NOTE: each whole workout obj is a WORKOUT
 // inside each WORKOUT we have a workoutName, and a ROUTINE (an array of EXERCISES)
 
+
+// TO DO: add beep sound effect when 3s before end of current duration
+// https://medium.com/@jerrysbusiness/playing-a-sound-file-in-a-react-project-bd0ad079ad93
+// https://dev.to/daveguz97/adding-sound-to-a-react-project-51m3
+// https://www.npmjs.com/package/react-sound
+
 import { useState, useEffect } from "react";
 
 import Image from "next/image";
@@ -167,7 +173,14 @@ export default function Timer()  {
               </>
             }
           </div>
-          { routine[rtnIdx+1] && <h3>Up Next: {routine[rtnIdx+1].name}</h3> }
+          { routine[rtnIdx+1] &&
+            <div className={styles.nextPreview}>
+              <h2>Up Next: <span className={styles.greenSpan}>{routine[rtnIdx+1].name.toUpperCase()}</span></h2>
+              <div className={styles.exerciseThumbnail}>
+                <Image src={`/images/${routine[rtnIdx+1].imgSrc}`} width={100} height={100} />
+              </div>
+            </div>
+          }
         </>
     }
 
