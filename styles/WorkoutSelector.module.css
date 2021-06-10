@@ -32,3 +32,17 @@
   font-size: 1.75rem;
   font-family: 'Ubuntu', sans-serif;
 }
+.greenIcon {
+  background-color: #1a1a1a;
+  border: none;
+  font-size: 2rem;
+  color: #a6ff4d;
+}
+.greenIcon:hover {
+  cursor: pointer;
+  color: #4d9900;
+}
+.greenIcon:disabled {
+  color: #a6bc8f;
+  cursor: auto;
+}

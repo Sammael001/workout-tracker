@@ -10,18 +10,62 @@
   align-items: center;
 }
 
-.dayOfWk {
+.title {
+  background-color: #bfff80;
   color: black;
-  font-weight: bold;
-  font-size: 1.25rem;
-  padding: 1rem;
-  background-color: #a6ff4d;
-  border: 1px solid green;
-  /* margin: 0.5rem; */
+  width: 80vw;
+  text-align: center;
+  margin: 0;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  border: 1px solid #1a1a1a;
 }
 .dayNamesRow {
   width: 80vw;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.dayOfWk {
+  background-color: #59b300;
+  color: black;
+  font-weight: bold;
+  font-size: 1.25rem;
+  padding: 1rem;
+  border: 1px solid #1a1a1a;
+  border-bottom: 1px solid gray;
+  flex: 1;
+  text-align: center;
+}
+
+.dayRow {
+  width: 80vw;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+}
+.cellBase {
+  font-weight: bold;
+  font-size: 1.1rem;
+  padding: 0.25rem;
+  border: 1px solid #1a1a1a;
+  flex-basis: 14.28%;
+  flex-grow: 1;
+  text-align: center;
+  height: 90px;
+}
+
+.brightCell {
+  color: black;
+  background-color: #bfff80;
+}
+.brightCell:hover {
+  background-color: #80ff00;
+}
+.darkCell {
+  color: #a6ff4d;
+  background-color: #333333;
+}
+.darkCell:hover {
+  background-color: #595959;
 }

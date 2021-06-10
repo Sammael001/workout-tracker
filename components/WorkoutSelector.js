@@ -14,10 +14,16 @@ function WorkoutSelector(props) {
   const [ selectedWorkoutName, setSelectedWorkoutName ] = useState("");
   // VVV custom hook which loads savedWorkouts data from localStorage, if it exists...if not, loads from demoSavedWorkouts
   const [ savedWorkouts, setSavedWorkouts ] = useLocalStorage(demoSavedWorkouts);
+  const [ haveChosen, setHaveChosen ] = useState(false);
 
   // handles changes in workout selection form
   function handleChange(evt){
     setSelectedWorkoutName(evt.target.value);
+    if ( evt.target.value === "" ) {
+      setHaveChosen(false);
+    } else {
+      setHaveChosen(true);
+    }
   }
 
   // when we submit the form, call props.chooseWorkout, pass in selected workout obj
@@ -53,7 +59,7 @@ function WorkoutSelector(props) {
           <option value=""></option>
           { giveOptions() }
         </select>
-        <button className="butn" type="submit">OK</button>
+        <button className={styles.greenIcon} type="submit" disabled={!haveChosen}><i className="fas fa-check-circle"></i></button>
       </form>
     </>
   );
