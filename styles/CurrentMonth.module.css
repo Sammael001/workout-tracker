@@ -20,6 +20,18 @@
   padding-bottom: 0.5rem;
   border: 1px solid #1a1a1a;
 }
+.iconButn {
+  background-color: #bfff80;
+  color: black;
+  border: none;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  font-size: 1.5rem;
+}
+.iconButn:hover {
+  color: gray;
+  cursor: pointer;
+}
 .dayNamesRow {
   width: 80vw;
   display: flex;
@@ -68,4 +80,8 @@
 }
 .darkCell:hover {
   background-color: #595959;
+}
+.deadCell {
+  background-color: #1a1a1a;
+  color: #1a1a1a;
 }

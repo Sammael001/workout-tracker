@@ -6,8 +6,8 @@ import WorkoutSelector from "./WorkoutSelector";
 
 export default function AddCompletedWorkout(props) {
   const [ nameValue, setNameValue ] = useState("");
-  const [ dateValue, setDateValue ] = useState("");
-  const [ displayMenu, setDisplayMenu ] = useState(true); // will init as FALSE later
+  const [ dateValue, setDateValue ] = useState(props.propDate);
+  const [ displayMenu, setDisplayMenu ] = useState(false); // will init as FALSE later
 
   function handleChange(evt){
     setDateValue(evt.target.value);
@@ -41,10 +41,10 @@ export default function AddCompletedWorkout(props) {
           </div>
         }
         <label htmlFor="dateValue" className={styles.bigLabel}>Workout Date:
-          <input type="date" name="dateValue" className={styles.myInput} onChange={handleChange} required/>
+          <input type="date" name="dateValue" value={dateValue} className={styles.myInput} onChange={handleChange} required/>
         </label>
         <br/>
-        <button className="butn" type="submit" disabled={displayMenu}>Submit</button>
+        <button className="butn" type="submit" disabled={!nameValue}>Submit</button>
       </form>
     </div>
   );

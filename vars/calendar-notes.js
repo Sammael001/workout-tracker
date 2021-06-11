@@ -1,4 +1,32 @@
 
+// regarding the bug in tracker.js...the example below works for both adding new keys, and updating existing keys
+// maybe don't use a cb...maybe clone workoutHistory, mutate it, then setState with the mutated copy?
+// since we're redirecting to showCurrent every time we add a new workoutHistory obj, and that redirect runs useEffect and pulls new values into state, maybe it will see the new values anyway
+let myArray = {
+  Jun2021: ["A", "B", "C", "D", "E"],
+  May2021: ["F", "G", "H", "I", "J"]
+};
+
+function propertyAdder(objArr, storageKey, thingToAdd, idx){
+  if (!objArr[storageKey]) {
+    let newArr = ["", "", "", "", ""];
+    newArr[idx] = thingToAdd;
+    return { ...objArr, [storageKey]: newArr }
+  } else {
+    objArr[storageKey][idx] = thingToAdd;
+    return { ...objArr };
+  }
+}
+
+let result = propertyAdder(myArray, "Jun2021", "lol!", 2);
+console.log(result);
+
+
+
+// let myTestArr = [ "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ]; // this array has 31 values and represents a 30-day month...arr[0] will always be empty
+// "Abs Workout" is at idx 4 b/c workout was completed Jun-04-2021 ... "Legs Workout" at idx 13 b/c it was completed Jun-13-2021
+
+
 // dayjs().daysInMonth() -->  outputs # of days in current month, ex: 30
 // dayjs().format('ddd MMM DD YYYY') --> outputs string of CURRENT date as shown: Wed Jun 09 2021
 // dayjs(arg).day() --> outputs day of wk for given date...if arg is blank, outputs today's date
