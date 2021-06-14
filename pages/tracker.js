@@ -79,8 +79,6 @@ export default function Tracker(){
     let workoutDay = dayjs(myDate).format('D');
     console.log(`storageKey: ${storageKey}, workoutDay: ${workoutDay}`);
     let newHistObj = {};
-    // IMPORTANT:  this function half works...it pushes new elements into arrays when the storageKey is ALREADY a prop in currHist, but won't add new storageKeys
-    // this func is broken perhaps bcuz we are redirecting to CurrentMonth each time we save...and if showCurrent changes, it causes a reload which pulls data INTO state from localStorage
     setWorkoutHistory(currHist => {
       if (!currHist[storageKey]) { // currHist[storageKey] is falsy if key of storageKey is not found (undefined) in workoutHistory
         let blankArr = new Array(daysInMonth).fill(""); // init new empty array that is daysInMonth long
@@ -93,10 +91,10 @@ export default function Tracker(){
         let blankArr = [...currHist[storageKey]]; // copy currHist array at key of storageKey
         if (!blankArr[workoutDay]) { // if there's nothing in currHist array at idx of workoutDay
           console.log("Nothing here!");
-          blankArr[workoutDay] = myName; // just set the value of that idx to be out new workout name
+          blankArr[workoutDay] = `•${myName}`; // just set the value of that idx to be out new workout name
         } else {
           console.log("something here!"); // else, if there's already a workout on this day, concat the new one
-          blankArr[workoutDay] = `${blankArr[workoutDay]} | ${myName}`;
+          blankArr[workoutDay] = `${blankArr[workoutDay]}\n•${myName}`;
         }
         newHistObj = { ...currHist, [storageKey]: blankArr };
         window.localStorage.setItem("workoutHistory", JSON.stringify(newHistObj));
@@ -110,29 +108,36 @@ export default function Tracker(){
 
   return (
     <div className={styles.mainCard}>
-      { showAdd && <h1 className={styles.title}>Add Date</h1> }
+      { showAdd && <h1 className={styles.title}>Add Workout To History</h1> }
       { showCurrent && <h1 className={styles.title}>Monthly History</h1> }
       { showHistory && <h1 className={styles.title}>All History</h1> }
       <div className={styles.buttonsDiv}>
-        <button
-          onClick={() => displayAdd()}
-          className={`${styles.myButn} ${ showAdd ? styles.activeButn : styles.inactiveButn }`}
-        >Add Date</button>
-        <button
-          onClick={() => displayCurrent()}
-          className={`${styles.myButn} ${ showCurrent ? styles.activeButn : styles.inactiveButn }`}
-        >Monthly History</button>
-        <button
-          onClick={() => displayHistory()}
-          className={`${styles.myButn} ${ showHistory ? styles.activeButn : styles.inactiveButn }`}
-        >All History
-        </button>
+        {
+          (showCurrent || showHistory) && (
+            <>
+              <button
+                onClick={() => displayCurrent()}
+                className={`${styles.myButn} ${ showCurrent ? styles.activeButn : styles.inactiveButn }`}
+              >Monthly History</button>
+              <button
+                onClick={() => displayHistory()}
+                className={`${styles.myButn} ${ showHistory ? styles.activeButn : styles.inactiveButn }`}
+              >All History
+              </button>
+            </>
+          )
+        }
       </div>
       <div className={styles.mainBox}>
-        { showAdd && <AddCompletedWorkout propDate={propDate} submitCompleted={submitCompleted}/> }
+        { showAdd && <AddCompletedWorkout propDate={propDate} submitCompleted={submitCompleted} goBack={displayCurrent} /> }
         { showCurrent && <CurrentMonth cellClick={goToAddDate} workoutHistory={workoutHistory}/> }
         { showHistory && <History /> }
       </div>
     </div>
   );
 };
+
+// <button
+//   onClick={() => displayAdd()}
+//   className={`${styles.myButn} ${ showAdd ? styles.activeButn : styles.inactiveButn }`}
+// >Add Date</button>

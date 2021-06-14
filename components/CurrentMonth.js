@@ -31,7 +31,7 @@ export default function CurrentMonth(props) {
       const firstDay = `${dayjs(monthYear).month() + 1}-01-${dayjs(monthYear).year()}`;
       let dayOfWk = dayjs(firstDay).day(); // OUTPUT: 2 (Sun = 0, Mon = 1, Tue = 2)
 
-      let newCalendar = [ [], [], [], [], [], [] ]; // init 3D array
+      let newCalendar = [ [], [], [], [], [], [] ]; // init 3D array w/ a sub-arr for each wk
       let dayNum = 1; // init var to track the day of the month
 
       for (let row = 0; row < newCalendar.length; row++) { // loop over calendar ROWS, while available
@@ -95,7 +95,9 @@ export default function CurrentMonth(props) {
             className={ giveCellStyles(calObj) }
             onClick={ () => handleCellClick(calObj.dayNum) }
           >
-            {calObj.dayNum}<br/>{calObj.workout}
+            <span className={styles.dayNum}>{calObj.dayNum}</span>
+            <br/>
+            <span>{calObj.workout}</span>
           </div>
         )
       });

@@ -28,6 +28,10 @@ export default function AddCompletedWorkout(props) {
     setDateValue("");
   }
 
+  function handleGoBack(){
+    console.log("Cancel was clicked!");
+  }
+
   return (
     <div>
       { displayMenu && <div className={styles.centering}><WorkoutSelector chooseWorkout={chooseWorkout}/></div> }
@@ -45,6 +49,7 @@ export default function AddCompletedWorkout(props) {
         </label>
         <br/>
         <button className="butn" type="submit" disabled={!nameValue}>Submit</button>
+        <button className="butn" type="button" onClick={() => props.goBack()}>Cancel</button>
       </form>
     </div>
   );
