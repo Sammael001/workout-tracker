@@ -153,7 +153,7 @@ export default function Tracker(){
                         deleteDayHistory={deleteDayHistory}
                       /> }
         { showCurrent && <CurrentMonth cellClick={goToAddDate} workoutHistory={workoutHistory}/> }
-        { showHistory && <History /> }
+        { showHistory && <History workoutHistory={workoutHistory}/> }
       </div>
     </div>
   );
