@@ -31,7 +31,8 @@ const dummyHistory =  {
   Jun2021: [ "", "", "", "Abs Workout 2", "", "", "", "", "", "", "", "", "Legs Workout 3", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ]
 };
 
-import AddCompletedWorkout from "../components/AddCompletedWorkout";
+import NewAddCompleted from "../components/NewAddCompleted";
+// import AddCompletedWorkout from "../components/AddCompletedWorkout";
 import CurrentMonth from "../components/CurrentMonth";
 import History from "../components/History";
 
@@ -72,38 +73,53 @@ export default function Tracker(){
     // this results in the AddCompletedWorkout component showing, with the clicked date autofilled
   }
 
-  function submitCompleted(myName, myDate){
-    console.log(`Completed workout named "${myName}" on date: ${myDate}`); // dates come from input form in this format: 2021-06-18
+  // called by NewAddCompleted, can add new workouts (to empty or already populated days) or overwrite workouts on populated days
+  function submitCompleted(myName, myDate, overwrite){
     let daysInMonth = dayjs(myDate).daysInMonth();
     let storageKey = dayjs(myDate).format('MMMYYYY');
     let workoutDay = dayjs(myDate).format('D');
-    console.log(`storageKey: ${storageKey}, workoutDay: ${workoutDay}`);
-    let newHistObj = {};
+    let newHistObj = {}; // object to hold obj from workoutHistory, for mutating + writing back into workoutHistory and localStorage
+
     setWorkoutHistory(currHist => {
       if (!currHist[storageKey]) { // currHist[storageKey] is falsy if key of storageKey is not found (undefined) in workoutHistory
-        let blankArr = new Array(daysInMonth).fill(""); // init new empty array that is daysInMonth long
-        blankArr[workoutDay] = myName; // add name of workout into blank array, at idx of workoutDay
-        newHistObj = { ...currHist, [storageKey]: blankArr };
-        // moved localStorage.setItem into here, bcuz calling localStorage.setItem below setWorkoutHistory() could accidentally set the localStorage to a blank object
+        let monthArr = new Array(daysInMonth).fill(""); // init new empty array that is daysInMonth long
+        monthArr[workoutDay] = `•${myName}`; // add name of workout into month array, at idx of workoutDay
+        newHistObj = { ...currHist, [storageKey]: monthArr };
+        // moved localStorage.setItem into here, bcuz calling localStorage.setItem below setWorkoutHistory() could accidentally set the localStorage to an empty object
         window.localStorage.setItem("workoutHistory", JSON.stringify(newHistObj));
         return newHistObj; // must return an obj that will replace the obj in workoutHistory
-      } else { // storageKey exists in currHist
-        let blankArr = [...currHist[storageKey]]; // copy currHist array at key of storageKey
-        if (!blankArr[workoutDay]) { // if there's nothing in currHist array at idx of workoutDay
-          console.log("Nothing here!");
-          blankArr[workoutDay] = `•${myName}`; // just set the value of that idx to be out new workout name
-        } else {
-          console.log("something here!"); // else, if there's already a workout on this day, concat the new one
-          blankArr[workoutDay] = `${blankArr[workoutDay]}\n•${myName}`;
+      } else { // if we arrive here, storageKey exists in currHist
+        let monthArr = [...currHist[storageKey]]; // copy currHist array at key of storageKey to get current month
+        if (!monthArr[workoutDay] || overwrite) {
+          // if there's nothing in current month at idx of workoutDay, OR if there is something there but overwrite is true...
+          console.log("Nothing here, or we're overwriting what's here");
+          monthArr[workoutDay] = `•${myName}`; // just set the value of that idx to be out new workout name
+        } else { // there's already a workout on this day + overwrite is false, so concat existing w/new workout name
+          console.log("something here and we decided to concat");
+          monthArr[workoutDay] = `${monthArr[workoutDay]}\n•${myName}`;
         }
-        newHistObj = { ...currHist, [storageKey]: blankArr };
+        newHistObj = { ...currHist, [storageKey]: monthArr };
         window.localStorage.setItem("workoutHistory", JSON.stringify(newHistObj));
         return newHistObj; // must return an obj that will replace the obj in workoutHistory
       }
     });
-    // TO DO: when adding MULTIPLE workouts to SAME day, concat with "|" like so: "Legs Workout|Arms Workout"
-    // TO DO: this means we must forbid "|" character from being entered during workoutName entry inside NewRoutine.js
     displayCurrent(); // after submitting a completed workout, redirect to display current month
+  }
+
+  // called by NewAddCompleted, clears all workoutHistory on a given date
+  function deleteDayHistory(myName, myDate){
+    // let daysInMonth = dayjs(myDate).daysInMonth();
+    let storageKey = dayjs(myDate).format('MMMYYYY');
+    let workoutDay = dayjs(myDate).format('D');
+    let newHistObj = {};
+    setWorkoutHistory(currHist => {
+      let monthArr = [...currHist[storageKey]]; // copy currHist array at key of storageKey
+      monthArr[workoutDay] = ""; // clear data from monthArr at index of workoutDay
+      newHistObj = { ...currHist, [storageKey]: monthArr }; // set newHistObj to be existing history, plus mutated monthArr
+      window.localStorage.setItem("workoutHistory", JSON.stringify(newHistObj));
+      return newHistObj;
+    });
+    displayCurrent(); // after clearing all workouts from this day, redirect to display current month
   }
 
   return (
@@ -129,7 +145,13 @@ export default function Tracker(){
         }
       </div>
       <div className={styles.mainBox}>
-        { showAdd && <AddCompletedWorkout propDate={propDate} submitCompleted={submitCompleted} goBack={displayCurrent} /> }
+        { showAdd && <NewAddCompleted
+                        propDate={propDate}
+                        submitCompleted={submitCompleted}
+                        goBack={displayCurrent}
+                        workoutHistory={workoutHistory}
+                        deleteDayHistory={deleteDayHistory}
+                      /> }
         { showCurrent && <CurrentMonth cellClick={goToAddDate} workoutHistory={workoutHistory}/> }
         { showHistory && <History /> }
       </div>
