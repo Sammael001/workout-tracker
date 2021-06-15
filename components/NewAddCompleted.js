@@ -8,7 +8,8 @@ import useLocalStorage from "../hooks/useLocalStorage";
 import { demoSavedWorkouts } from "../vars/workoutVars";
 import dayjs from 'dayjs';
 
-// import WorkoutSelector from "./WorkoutSelector";
+// pulling down savedWorkouts bc this contains the list of available workout names to choose from
+// also rcving workoutHistory as props bc this is the historical data for COMPLETED workouts 
 
 export default function AddCompletedWorkout(props) {
   const [ nameValue, setNameValue ] = useState("");

@@ -8,8 +8,8 @@ const Navbar = (props) => {
     <nav>
       <Link href="/">
         <a className="logo">
-          <Image src="/images/exercise-icon-3.png" width={50} height={50} />
-          {' '}uFit
+          <Image src="/images/icon2.gif" width={50} height={50} />
+          {' '}HIITrainer
         </a>
       </Link>
       <Link href="/timer">

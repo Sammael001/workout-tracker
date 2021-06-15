@@ -4,10 +4,6 @@ import { useState, useEffect } from "react";
 import dayjs from 'dayjs'; // https://day.js.org/docs/en/display/format
 import { v4 as uuidv4 } from 'uuid';
 
-// TO DO: actually write/read/delete from localStorage (parent func inside tracker.js should be called from AddCompletedWorkout)
-// ----- actually read from localStorage (parent func inside tracker.js should be called from here, in CurrentMonth)
-// TO DO: enable clicking on a calendar day to change (add, delete) workout -- take user to AddCompletedWorkout, but autopop day we clicked on
-
 
 export default function CurrentMonth(props) {
   const [ myCalendar, setMyCalendar ] = useState([]);

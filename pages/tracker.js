@@ -4,27 +4,17 @@ import styles from "../styles/Tracker.module.css";
 import { v4 as uuidv4 } from 'uuid';
 import dayjs from 'dayjs';
 
-// TO DO: decide how to manage workout deletion
-// TO DO: decide how to manage multiple workouts on same day (or whether to allow this at all)
-// TO DO: shift position of days and workout names on calendar
-// TO DO: shorten workout names (when displayed on calendar) if too long
-
-
 // dayjs().daysInMonth()  -->  outputs # of days in current month, ex: 30
 // this VV outputs string of CURRENT date as shown: Wed Jun 09 2021
 // dayjs().format('ddd MMM DD YYYY')
 // dayjs(myDate).format('MMMYYYY')
 
-// TO DO: inside submitCompleted, add the workout into localStorage under key workoutHistory
 // workoutHistory: {
 //   May2021: [ "", "", "", ....32 elements in array b/c May2021 has 31 days... ],
 //   Jun2021: [ "", "", "", "Abs Workout", "", "", "", "", "", "", "", "", "Legs Workout", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ]
 // }
 //  We have 31 elements in Jun2021 array, b/c Jun2021 has 30 days
 // "Abs Workout" is at idx 4 b/c workout was completed Jun-04-2021 ... "Legs Workout" at idx 13 b/c it was completed Jun-13-2021
-
-// TO DO: when adding MULTIPLE workouts to SAME day, concat with "|" like so: "Legs Workout|Arms Workout"
-// TO DO: this means we must forbid "|" character from being entered during workoutName entry inside NewRoutine.js
 
 const dummyHistory =  {
   May2021: [ "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "" ],
@@ -91,7 +81,7 @@ export default function Tracker(){
       } else { // if we arrive here, storageKey exists in currHist
         let monthArr = [...currHist[storageKey]]; // copy currHist array at key of storageKey to get current month
         if (!monthArr[workoutDay] || overwrite) {
-          // if there's nothing in current month at idx of workoutDay, OR if there is something there but overwrite is true...
+          // if there's nothing in current month at idx of workoutDay, OR if there is something there, but overwrite is true...
           console.log("Nothing here, or we're overwriting what's here");
           monthArr[workoutDay] = `•${myName}`; // just set the value of that idx to be out new workout name
         } else { // there's already a workout on this day + overwrite is false, so concat existing w/new workout name
@@ -108,7 +98,6 @@ export default function Tracker(){
 
   // called by NewAddCompleted, clears all workoutHistory on a given date
   function deleteDayHistory(myName, myDate){
-    // let daysInMonth = dayjs(myDate).daysInMonth();
     let storageKey = dayjs(myDate).format('MMMYYYY');
     let workoutDay = dayjs(myDate).format('D');
     let newHistObj = {};
