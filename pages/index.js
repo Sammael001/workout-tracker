@@ -6,8 +6,8 @@ import styles from '../styles/Home.module.css';
 export default function Home() {
   return (
     <div className={styles.mainCard}>
-      <h1 className={styles.appTitle}>uFit</h1>
-      <p className={styles.appSubtitle}>3-in-1 Exercise App</p>
+      <h1 className={styles.appTitle}>HIITrainer</h1>
+      <p className={styles.appSubtitle}>3-in-1 High Intensity Interval Training App</p>
 
       <div className={styles.optionCard}>
         <Link href="/timer">
