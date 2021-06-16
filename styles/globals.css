@@ -36,6 +36,10 @@ nav a {
   font-family: 'Odibee Sans', cursive;
   font-size: 1.75rem;
   letter-spacing: 0.1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 nav a:hover {
   color: #99ff66;
@@ -44,6 +48,20 @@ nav .logo {
   margin-right: auto; /* this element is INSIDE <nav>, which has justify-content set to "flex-end" */
   /* but because we set the .logo class to margin-right: "auto", this element pushes itself all the way over to the left */
   margin-left: 0.5rem;
+}
+.logoIcon {
+  /* font-size: 1.75rem; */
+  color: black;
+  background-color: #a6ff4d;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  padding: 0.3rem;
+  padding-left: 0.4rem;
+  margin: 0.25rem;
+}
+.logoIcon > i {
+  font-size: 2rem;
 }
 
 .butn {

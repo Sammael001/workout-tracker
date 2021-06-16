@@ -1,5 +1,6 @@
 
-import Image from 'next/image';
+// import Image from 'next/image';
+// <Image src="/images/timer-2.png" width={50} height={50}/>
 import Link from "next/link";
 import styles from '../styles/Home.module.css';
 
@@ -14,7 +15,7 @@ export default function Home() {
           <a>
             <h3>Workout Timer</h3>
             <div className={styles.imgBG}>
-              <Image src="/images/timer-2.png" width={50} height={50}/>
+              <i className="fas fa-stopwatch"></i>
             </div>
           </a>
         </Link>
@@ -25,7 +26,7 @@ export default function Home() {
           <a>
             <h3>Routine Builder</h3>
             <div className={styles.imgBG}>
-              <Image src="/images/memo-3.png" width={50} height={50}/>
+              <i className="fas fa-pen-square"></i>
             </div>
           </a>
         </Link>
@@ -36,7 +37,7 @@ export default function Home() {
           <a>
             <h3>Daily Tracker</h3>
             <div className={styles.imgBG}>
-              <Image src="/images/tracker-2.png" width={50} height={50}/>
+              <i className="fas fa-calendar-day"></i>
             </div>
           </a>
         </Link>
