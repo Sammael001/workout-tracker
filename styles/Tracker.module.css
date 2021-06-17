@@ -33,7 +33,7 @@
 }
 
 .mainBox {
-  width: 90vw;
+  max-width: 90vw;
   display: flex;
   flex-direction: row;
   justify-content: center;

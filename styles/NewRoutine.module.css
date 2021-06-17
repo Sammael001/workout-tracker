@@ -24,7 +24,8 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  flex-wrap: wrap;
+  overflow-y: scroll;
+  /* flex-wrap: wrap; */
 }
 .routineListItem {
   padding: 0.25rem;
