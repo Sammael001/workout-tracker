@@ -74,7 +74,7 @@ const demoSavedWorkouts = [
     routine: [
       { name: "rest", imgSrc: "rest.gif", duration: "5", id: "hg45647jaahqb54" },
       { name: "reverse crunch leg extension", imgSrc: "reverse crunch leg extension.gif", duration: "30", id: "7jjgfw45h56u" },
-      { name: "reverse crunch", imgSrc: "reverse crunch.gif", duration: "30", id: "4ygqtrj67i467" },
+      { name: "reverse crunches", imgSrc: "reverse crunches.gif", duration: "30", id: "4ygqtrj67i467" },
       { name: "rest", imgSrc: "rest.gif", duration: "10", id: "134gh67846kgh" },
       { name: "spiderman plank", imgSrc: "spiderman plank.gif", duration: "30", id: "sdfer34546h" },
       { name: "crossbody mountain climbers", imgSrc: "crossbody mountain climbers.gif", duration: "30", id: "h5786kjtyeye" },
