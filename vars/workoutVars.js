@@ -19,7 +19,7 @@ const demoSavedWorkouts = [
     ]
   },
   {
-    workoutName: "CT - Abs 1",
+    workoutName: "CT - Legs 1",
     id: "008",
     routine: [
       { name: "rest", imgSrc: "rest.gif", duration: "5", id: "8285638n3bg727" },
@@ -66,6 +66,38 @@ const demoSavedWorkouts = [
       { name: "leg sweep (L)", imgSrc: "leg sweep left.gif", duration: "30", id: "679k5435yhh" },
       { name: "leg sweep (R)", imgSrc: "leg sweep right.gif", duration: "30", id: "889879jhnfshs" },
       { name: "lunge taps", imgSrc: "lunge taps.gif", duration: "30", id: "657356uhgfghg" }
+    ]
+  },
+  {
+    workoutName: "CT - Abs 1",
+    id: "009",
+    routine: [
+      { name: "rest", imgSrc: "rest.gif", duration: "5", id: "hg45647jaahqb54" },
+      { name: "reverse crunch leg extension", imgSrc: "reverse crunch leg extension.gif", duration: "30", id: "7jjgfw45h56u" },
+      { name: "reverse crunch", imgSrc: "reverse crunch.gif", duration: "30", id: "4ygqtrj67i467" },
+      { name: "rest", imgSrc: "rest.gif", duration: "10", id: "134gh67846kgh" },
+      { name: "spiderman plank", imgSrc: "spiderman plank.gif", duration: "30", id: "sdfer34546h" },
+      { name: "crossbody mountain climbers", imgSrc: "crossbody mountain climbers.gif", duration: "30", id: "h5786kjtyeye" },
+      { name: "rest", imgSrc: "rest.gif", duration: "10", id: "5454h5ty7867ik" },
+      { name: "russian twist", imgSrc: "russian twist.gif", duration: "30", id: "3g45y56u67je" },
+      { name: "in and out", imgSrc: "in and out.gif", duration: "30", id: "34tgdfru8i8ky" },
+      { name: "rest", imgSrc: "rest.gif", duration: "10", id: "566wethws43w34" },
+      { name: "hip dips", imgSrc: "hip dips.gif", duration: "30", id: "jy987okhfjd" },
+      { name: "plank", imgSrc: "plank.gif", duration: "30", id: "serq3hhdgjty77" },
+      { name: "rest", imgSrc: "rest.gif", duration: "10", id: "4dfhsj7jghdss" },
+      { name: "hundreds", imgSrc: "hundreds.gif", duration: "30", id: "4545h576878k" },
+      { name: "crunches", imgSrc: "crunches.gif", duration: "30", id: "dfghertu67r" },
+      { name: "rest", imgSrc: "rest.gif", duration: "10", id: "bnmghjkgjkf" },
+      { name: "up and down plank", imgSrc: "up and down plank.gif", duration: "30", id: "wesdfbfgyjdn" },
+      { name: "plank", imgSrc: "plank.gif", duration: "30", id: "5wgfght6uftjmdg" },
+      { name: "rest", imgSrc: "rest.gif", duration: "10", id: "dherhe6dghkfkf" },
+      { name: "heel taps", imgSrc: "heel taps.gif", duration: "30", id: "agrthtjyukyk" },
+      { name: "windshield wipers", imgSrc: "windshield wipers.gif", duration: "30", id: "tythdghmsgs" },
+      { name: "rest", imgSrc: "rest.gif", duration: "10", id: "adbfbxdfhft" },
+      { name: "reverse crunch leg extension", imgSrc: "reverse crunch leg extension.gif", duration: "30", id: "ftgmxfmsfgmsfm" },
+      { name: "straight leg crunches", imgSrc: "straight leg crunches.gif", duration: "30", id: "styjtymdgmghmd" },
+      { name: "rest", imgSrc: "rest.gif", duration: "10", id: "ssrhrthhnmgh" },
+      { name: "up and down plank", imgSrc: "up and down plank.gif", duration: "30", id: "ymmhdghjdghjd" }
     ]
   }
 ];
