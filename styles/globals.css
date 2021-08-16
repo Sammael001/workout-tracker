@@ -44,6 +44,16 @@ nav a {
 nav a:hover {
   color: #99ff66;
 }
+
+/* below 900 px width, stop letting list items wrap inside .routineList */
+@media only screen and (max-width: 900px) {
+  nav a {
+    margin-left: 6px;
+    margin-right: 8px;
+    font-size: 1.25rem;
+  }
+}
+
 nav .logo {
   margin-right: auto; /* this element is INSIDE <nav>, which has justify-content set to "flex-end" */
   /* but because we set the .logo class to margin-right: "auto", this element pushes itself all the way over to the left */

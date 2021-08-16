@@ -85,7 +85,7 @@
 
 
 /* below 750 px width, stop organizing elements inside .mainBox in rows, start organizing in columns */
-@media only screen and (max-width: 750px) {
+@media only screen and (max-width: 900px) {
   .mainCard {
     justify-content: flex-start;
   }

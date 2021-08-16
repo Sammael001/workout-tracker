@@ -25,6 +25,7 @@
   justify-content: flex-start;
   align-items: flex-start;
   overflow-y: scroll;
+  max-height: 50vh;
   /* flex-wrap: wrap; */
 }
 .routineListItem {
@@ -51,20 +52,20 @@
 
 
 /* above 1100px width, limit height of .routineList and wrap its elements */
-@media only screen and (min-width: 1101px) {
+/* @media only screen and (min-width: 900px) {
   .routineList {
     max-height: 50vh;
   }
-}
+} */
 
-/* below 1100 px width, stop letting list items wrap inside .routineList */
-@media only screen and (max-width: 1100px) {
+/* below 900 px width, stop letting list items wrap inside .routineList */
+@media only screen and (max-width: 900px) {
   .routineList {
     flex-wrap: nowrap;
   }
 }
-/* below 750 px width, stop organizing elements inside .mainBox in rows, start organizing in columns */
-@media only screen and (max-width: 750px) {
+
+@media only screen and (max-width: 900px) {
   .routineBox {
     min-width: 90vw;
   }
